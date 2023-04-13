@@ -23,7 +23,8 @@
                  [ring/ring-core "1.9.6"]
                  [ring/ring-defaults "0.3.4"]
                  [org.clojure/java.jdbc "0.7.12"]
-                 [selmer "1.12.55"]]
+                 [selmer "1.12.55"]
+                 [org.jscience/jscience "4.3.1"]]
 
   :min-lein-version "2.0.0"
   

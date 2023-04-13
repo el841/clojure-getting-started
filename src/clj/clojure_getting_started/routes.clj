@@ -7,7 +7,10 @@
    [ring.util.response]
    [clojure.java.jdbc :as jdbc]
    [ring.util.http-response :as response])
-  )
+  (:import
+   org.jscience.physics.amount.Amount
+   org.jscience.physics.model.RelativisticModel
+   javax.measure.unit.SI))
 
 (defn home [request]
   (layout/render request "home.html"))
@@ -19,9 +22,16 @@
                                   (map :tick (jdbc/query connection "SELECT tick FROM ticks"))))]
                   (str "Database Output\n\n" (clojure.string/join "\n" (map #(str "Read from DB: " %) ticks))))))
 
+(defn convert [request]
+  (layout/plain
+   (let [energy-amount (Amount/valueOf "12 GeV")]
+     (do (RelativisticModel/select)
+         (str "E=mc^2: " energy-amount " = " (.to energy-amount SI/KILOGRAM))))))
+
 (defn routes []
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
    ["/" {:get home}]
-   ["/database" {:get database}]])
+   ["/database" {:get database}]
+   ["/convert" {:get convert}]])
